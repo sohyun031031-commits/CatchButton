@@ -4,10 +4,13 @@ namespace CatchButton
     {
         private Random random = new Random();
         private int score = 0;
+        private int missCount = 0; // 놓친 횟수
+        private const int MAX_MISSES = 20; // 최대 놓친 횟수
         private DateTime mouseEnterTime = DateTime.MinValue;
         private bool isMouseInButton = false;
         private const int EscapeDelayMilliseconds = 300; // 0.3초
         private System.Windows.Forms.Timer checkTimer;
+        private bool isGameOver = false; // 게임 종료 여부
 
         public Form1()
         {
@@ -28,6 +31,8 @@ namespace CatchButton
 
         private void CheckTimer_Tick(object sender, EventArgs e)
         {
+            if (isGameOver) return; // 게임 종료 상태면 체크 안 함
+
             // 마우스 위치 가져오기
             Point mousePos = Control.MousePosition;
             Point formPos = this.PointToClient(mousePos);
@@ -59,8 +64,16 @@ namespace CatchButton
                 else if ((DateTime.Now - mouseEnterTime).TotalMilliseconds >= EscapeDelayMilliseconds)
                 {
                     score -= 10;
+                    missCount++; // 놓친 횟수 증가
                     UpdateScore();
                     isMouseInButton = false;
+
+                    // 20번 놓치면 게임 종료
+                    if (missCount >= MAX_MISSES)
+                    {
+                        EndGame();
+                        return;
+                    }
 
                     int maxX = Math.Max(0, this.ClientSize.Width - button1.Width);
                     int maxY = Math.Max(0, this.ClientSize.Height - button1.Height);
@@ -79,9 +92,38 @@ namespace CatchButton
             }
         }
 
+        private void EndGame()
+        {
+            isGameOver = true;
+            checkTimer.Stop();
+            button1.Enabled = false;
+
+            MessageBox.Show($"게임 종료!\n최종 점수: {score}점\n놓친 횟수: {missCount}/{MAX_MISSES}", "게임 오버");
+
+            // 게임 재시작
+            ResetGame();
+        }
+
+        private void ResetGame()
+        {
+            score = 0;
+            missCount = 0;
+            isGameOver = false;
+            button1.Size = new Size(89, 23); // 원래 크기로 복원
+            button1.Enabled = true;
+            isMouseInButton = false;
+            mouseEnterTime = DateTime.MinValue;
+
+            // 버튼 위치 초기화
+            button1.Location = new Point(332, 69);
+
+            UpdateScore();
+            checkTimer.Start();
+        }
+
         private void UpdateScore()
         {
-            this.Text = $"점수: {score}점";
+            this.Text = $"점수: {score}점 | 놓친 횟수: {missCount}/{MAX_MISSES}";
         }
 
         private void Form1_MouseMove(object sender, MouseEventArgs e)
