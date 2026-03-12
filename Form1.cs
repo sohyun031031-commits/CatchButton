@@ -96,11 +96,11 @@ namespace CatchButton
         {
             isGameOver = true;
             checkTimer.Stop();
+            checkTimer.Dispose(); // 타이머 완전 해제
             button1.Enabled = false;
 
             MessageBox.Show($"게임 종료!\n최종 점수: {score}점\n놓친 횟수: {missCount}/{MAX_MISSES}", "게임 오버");
 
-            // 게임 재시작
             ResetGame();
         }
 
@@ -118,6 +118,10 @@ namespace CatchButton
             button1.Location = new Point(332, 69);
 
             UpdateScore();
+            
+            checkTimer = new System.Windows.Forms.Timer(); // 새 타이머 생성
+            checkTimer.Interval = 50;
+            checkTimer.Tick += CheckTimer_Tick;
             checkTimer.Start();
         }
 
@@ -133,16 +137,16 @@ namespace CatchButton
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // 클릭 성공 범위 확인: 버튼 중심부 50% 영역에서만 클릭 성공
+            // 클릭 성공 범위 확인: 버튼 중심부 70% 영역에서만 클릭 성공
             Point mousePos = Control.MousePosition;
             Point formPos = this.PointToClient(mousePos);
 
             int buttonCenterX = button1.Location.X + button1.Width / 2;
             int buttonCenterY = button1.Location.Y + button1.Height / 2;
 
-            // 클릭 성공 범위: 버튼 50% 영역
-            int clickRadiusX = button1.Width / 4;
-            int clickRadiusY = button1.Height / 4;
+            // 클릭 성공 범위: 버튼 70% 영역
+            int clickRadiusX = (int)(button1.Width * 0.35);
+            int clickRadiusY = (int)(button1.Height * 0.35);
 
             int distanceX = Math.Abs(formPos.X - buttonCenterX);
             int distanceY = Math.Abs(formPos.Y - buttonCenterY);
