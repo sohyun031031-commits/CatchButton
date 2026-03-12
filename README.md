@@ -1,6 +1,9 @@
 # CatchButton
 
 <img width="799" height="481" alt="스크린샷 2026-03-12 121309" src="https://github.com/user-attachments/assets/275e654e-62b0-4504-8886-f7ba5b8f15f7" />
+<img width="800" height="479" alt="스크린샷 2026-03-12 132045" src="https://github.com/user-attachments/assets/51ea8bcd-1f55-458f-8aba-6af9ef3a4471" />
+<img width="801" height="480" alt="스크린샷 2026-03-12 132120" src="https://github.com/user-attachments/assets/67499d77-aa4d-4e05-aa3a-6045dfc0fc10" />
+
 
 **게임의 기능들
 - 버튼을 클릭하면 +100점, 실패하면 -10점
