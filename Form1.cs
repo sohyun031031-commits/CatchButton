@@ -50,12 +50,12 @@ namespace CatchButton
         {
             score += 100;
             UpdateScore();
-
-            // 버튼 크기를 10% 줄임 (90%로 유지)
-            button1.Width = (int)(button1.Width * 0.9);
-            button1.Height = (int)(button1.Height * 0.9);
-
             MessageBox.Show($"잡았다!\n현재 점수: {score}점");
+
+            // 버튼 크기 10% 감소
+            int newWidth = (int)(button1.Width * 0.9);
+            int newHeight = (int)(button1.Height * 0.9);
+            button1.Size = new Size(newWidth, newHeight);
         }
 
     }
